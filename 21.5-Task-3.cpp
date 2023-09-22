@@ -8,6 +8,41 @@ struct vector
     double y;
 };
 
+//Фунция ввода и проверки вещественного числа
+double double_input()
+{
+    bool error=false;
+
+    do
+    {
+        std::string num;
+        std::getline(std::cin, num);
+
+        
+    } while (error);
+    
+    
+    
+    //Проверка длины строки с числом
+    if (num.length() > 9)
+    {
+        std::cerr << std::endl << "Error! The number is not a positive integer!" << std::endl;
+        return false;
+    }
+    else 
+    {
+        //Проверка что все символы являются числами
+        for (int i = 0; i < num.length(); i++)
+        {
+            if (!isdigit(num[i]))
+                {
+                    std::cerr << std::endl << "Error! The number is not a positive integer!" << std::endl;
+                    return false;
+                }
+        }
+    }
+    return true;
+}
 
 //Фунция сложения векторов
 void add()
@@ -63,8 +98,14 @@ void length()
 //Фунция нормализации вектора
 void normalize()
 {
-    vector vecA;
-    vector vecB;
+    vector vec;
+
+    vec.x = 3.0;
+    vec.y = 4.0;
+
+    double length = sqrt(pow(vec.x,2)+pow(vec.y,2));
+
+    std::cout << "Normalized vector coordinates: x=" << vec.x/length << " y=" << vec.y/length << std::endl;
 }
 
 int main()
