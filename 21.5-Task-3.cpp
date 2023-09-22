@@ -9,39 +9,53 @@ struct vector
 };
 
 //Фунция ввода и проверки вещественного числа
-double double_input()
+double input_double()
 {
     bool error=false;
+    std::string str;
 
     do
     {
-        std::string num;
-        std::getline(std::cin, num);
-
+        error=false;
+        int pointCount=0;
         
-    } while (error);
-    
-    
-    
-    //Проверка длины строки с числом
-    if (num.length() > 9)
-    {
-        std::cerr << std::endl << "Error! The number is not a positive integer!" << std::endl;
-        return false;
-    }
-    else 
-    {
-        //Проверка что все символы являются числами
-        for (int i = 0; i < num.length(); i++)
+        std::getline(std::cin, str);
+
+        //Проверка первого знака
+        if (!isdigit(str[0]) & str[0]!='-' & str[0]!='.') 
         {
-            if (!isdigit(num[i]))
-                {
-                    std::cerr << std::endl << "Error! The number is not a positive integer!" << std::endl;
-                    return false;
-                }
+            error=true;
+            std::cerr << "Error! The entered data is not a real number! Please re-enter." << std::endl;
         }
-    }
-    return true;
+        else if (str[0]=='.') pointCount++;
+        //Проверка остальной строки
+        else 
+        for (int i=1; i<str.length(); i++)
+        {
+            if (str[i]=='.') pointCount++;
+            else if (!isdigit(str[i]) || pointCount>1)
+            {
+                error=true;
+                std::cerr << "Error! The entered data is not a real number! Please re-enter." << std::endl;
+                i=str.length();
+            } 
+        }
+
+
+    } while (error);
+
+    double num = stod (str);
+   
+    return num;
+}
+
+//Функция ввода координат вектора
+void input_coordinates(vector &vec)
+{
+    std::cout << "Enter the X coordinate of the vector: ";
+    vec.x = input_double();
+    std::cout << "Enter the Y coordinate of the vector: ";
+    vec.y = input_double();
 }
 
 //Фунция сложения векторов
@@ -50,12 +64,12 @@ void add()
     vector vecA;
     vector vecB;
     
-    vecA.x = 2.5;
-    vecA.y = 4.5;
-    vecB.x = -2.5;
-    vecB.y = 2.5;
+    std::cout << "--- Entering the coordinates of vector A ---" << std::endl;
+    input_coordinates(vecA);
+    std::cout << "--- Entering the coordinates of vector B ---" << std::endl;
+    input_coordinates(vecB);
 
-    std::cout << "Result vector coordinates: x=" << vecA.x+vecB.x << " y=" << vecA.y+vecB.y << std::endl;
+    std::cout << std::endl << "Result vector coordinates: x=" << vecA.x+vecB.x << " y=" << vecA.y+vecB.y << std::endl;
 }
 
 //Фунция вычитания векторов
@@ -64,24 +78,26 @@ void subtract()
     vector vecA;
     vector vecB;
     
-    vecA.x = 2.5;
-    vecA.y = 4.5;
-    vecB.x = -2.5;
-    vecB.y = 2.5;
+    std::cout << "--- Entering the coordinates of vector A ---" << std::endl;
+    input_coordinates(vecA);
+    std::cout << "--- Entering the coordinates of vector B ---" << std::endl;
+    input_coordinates(vecB);
 
-    std::cout << "Result vector coordinates: x=" << vecA.x-vecB.x << " y=" << vecA.y-vecB.y << std::endl;
+    std::cout << std::endl << "Result vector coordinates: x=" << vecA.x-vecB.x << " y=" << vecA.y-vecB.y << std::endl;
 }
 
 //Фунция умножения вектора на скаляр
 void scale()
 {
     vector vec;
-    double scale=2.0;
 
-    vec.x = 2.5;
-    vec.y = 4.5;
+    std::cout << "--- Entering the coordinates of vector ---" << std::endl;
+    input_coordinates(vec);
+    std::cout << "Enter the scalar value: ";
+    double scale = input_double();
+
     
-    std::cout << "Result vector coordinates: x=" << vec.x*scale << " y=" << vec.y*scale << std::endl;
+    std::cout << std::endl << "Result vector coordinates: x=" << vec.x*scale << " y=" << vec.y*scale << std::endl;
 }
 
 //Фунция нахождения длины вектора
@@ -89,10 +105,10 @@ void length()
 {
     vector vec;
     
-    vec.x = 1.0;
-    vec.y = 1.0;
+    std::cout << "--- Entering the coordinates of vector ---" << std::endl;
+    input_coordinates(vec);
     
-    std::cout << "Vector length=" << sqrt(pow(vec.x,2)+pow(vec.y,2)) << std::endl;
+    std::cout << std::endl << "Vector length=" << sqrt(pow(vec.x,2)+pow(vec.y,2)) << std::endl;
 }
 
 //Фунция нормализации вектора
@@ -100,12 +116,12 @@ void normalize()
 {
     vector vec;
 
-    vec.x = 3.0;
-    vec.y = 4.0;
+    std::cout << "--- Entering the coordinates of vector ---" << std::endl;
+    input_coordinates(vec);
 
     double length = sqrt(pow(vec.x,2)+pow(vec.y,2));
 
-    std::cout << "Normalized vector coordinates: x=" << vec.x/length << " y=" << vec.y/length << std::endl;
+    std::cout << std::endl << "Normalized vector coordinates: x=" << vec.x/length << " y=" << vec.y/length << std::endl;
 }
 
 int main()
